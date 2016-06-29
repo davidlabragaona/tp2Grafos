@@ -1,11 +1,12 @@
 package ar.edu.uno.poo2.grafos.core;
 
+import java.util.*;
+
 public class Grafo {
 	
 	int cantVertices;
 	int matrizAdyacencia[][];
 	double probabilidad;
-	double densidad;
 	
 	
 	public Grafo(int cantVertices, double probabilidad) {
@@ -40,34 +41,33 @@ public class Grafo {
 	}
 	
 	private void inicializarGrafo() {
-		/*
-		 * Calculamos la cantidad de aristas
-		 * que se pueden formar dada la cantidad de vertices
-		 * y la probabilidad asignada
-		 */
-		
-		// n Cantidad de vertices
-		// p Probabilidad
-		// m Aristas
-		// G(n,p)
 		int n = this.getCantVertices();
+		List<Vertice> vertices = new ArrayList<Vertice>(n);
+		
+		//Creamos los vértices
+		for (int i = 0; i < n; i++)
+			vertices.add(new Vertice("v" + (i+1)));
+		
 		System.out.println("Cantidad de vertices: " + n);
-		double p = this.getProbabilidad();
-		System.out.println("probabilidad: " + p);
-		int m = (int)(n * (n - 1) * (double)(p / 2));
+		
+		int m = n * (n - 1);
+		
+		
+		double pc = new Random().nextFloat() * this.getProbabilidad();
+		System.out.println("probabilidad: " + pc);
+		//m = Math.round((float)(n * (n - 1) * (pc / 2.0)));
 		System.out.println("Cantidad de aristas: " + m);
 		
 		// grado promedio
-		double gp = p * ( n - 1);
+		double gp = pc * (n - 1);
 		System.out.println("Grado promedio: " + gp);
 		
 		// grado máximo
-		int gm = (int)p * n;
+		int gm = (int)(pc * n);
 		System.out.println("Grado máximo: " + gm);
-		
 	}
 	
 	public static void main(String[] args) {
-		Grafo g = new Grafo(4, .9);
+		Grafo g = new Grafo(4, 1);
 	}
 }
