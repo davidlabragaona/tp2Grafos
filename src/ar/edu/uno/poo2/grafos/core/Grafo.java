@@ -7,6 +7,7 @@ public class Grafo {
 	int cantVertices;
 	int matrizAdyacencia[][];
 	double probabilidad;
+	Random aleatorio = new Random();
 	
 	
 	public Grafo(int cantVertices, double probabilidad) {
@@ -42,32 +43,40 @@ public class Grafo {
 	
 	private void inicializarGrafo() {
 		int n = this.getCantVertices();
-		List<Vertice> vertices = new ArrayList<Vertice>(n);
+		double p = this.getProbabilidad();
 		
-		//Creamos los vértices
-		for (int i = 0; i < n; i++)
-			vertices.add(new Vertice("v" + (i+1)));
+		matrizAdyacencia = new int[n][n];
 		
-		System.out.println("Cantidad de vertices: " + n);
-		
-		int m = n * (n - 1);
-		
-		
-		double pc = new Random().nextFloat() * this.getProbabilidad();
-		System.out.println("probabilidad: " + pc);
-		//m = Math.round((float)(n * (n - 1) * (pc / 2.0)));
-		System.out.println("Cantidad de aristas: " + m);
-		
-		// grado promedio
-		double gp = pc * (n - 1);
-		System.out.println("Grado promedio: " + gp);
-		
-		// grado máximo
-		int gm = (int)(pc * n);
-		System.out.println("Grado máximo: " + gm);
+		//Llenamos la matriz de adyacencia
+		for (int i = 0; i < n - 1; i++) {
+			matrizAdyacencia[i][i] = 0;
+			for (int j = i + 1; j < n; j++) {
+				if (aleatorio.nextDouble() < p) {
+					matrizAdyacencia[i][j] = 1;
+					matrizAdyacencia[j][i] = 1;
+				}
+			}
+		}
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < matrizAdyacencia.length; i++) {
+			for (int j = 0; j < matrizAdyacencia[i].length; j++) {
+				sb.append(matrizAdyacencia[i][j]);
+				if (j != matrizAdyacencia[i].length + 1) {
+					sb.append(" ");
+				}
+			}
+			if (i != matrizAdyacencia.length - 1)
+				sb.append("\n");
+		}
+		return sb.toString();
 	}
 	
 	public static void main(String[] args) {
-		Grafo g = new Grafo(4, 1);
+		Grafo g = new Grafo(10, 0.8);
+		System.out.println(g);
 	}
 }
